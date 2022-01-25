@@ -1,0 +1,13 @@
+#wrapper {
+	width: 500px;
+	margin: 0px auto;
+	padding: 10px;
+	text-align: justify;
+	& > div {
+		margin-bottom: 15px;
+	}
+	p {
+		margin-bottom: 5px;
+	}
+}
+

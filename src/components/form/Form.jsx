@@ -16,8 +16,9 @@ export const Form = () => {
   const [generaltext, setGeneralText] = useState("");
   const [textComment, setTextComment] = useState("");
   const [editId, setEditId] = useState("");
+  const [blur, setBlur] = useState(false);
 
-  const [tagText, setTagText] = useState("");
+  const [tagText, setTagText] = useState('');
   
   console.log('tag>>',tagText);
   
@@ -26,29 +27,16 @@ export const Form = () => {
   };
   const handleTextChange = (e) => {
      setTextComment(e.target.value);
-         let arr = [];
-       let val = textComment.split(/(#[a-z\d-]+)/ig);   
-     for (let i = 0; i < val.length; i++) {
-      if ( val[i] === "#") {
-          arr.push(val[i]);
-          setTagText(...tagText, arr);
-    }
-
-     }
-
-
-
-
-     /*
+        
     let val = textComment.split(/(#[a-z\d-]+)/ig);
     for (let i = 0; i < val.length; i++) {
         if (val[i].charAt(0) === "#") {
             let arr = [];
             arr.push(val[i]);
-            setTagText(...tagText, arr);
+            setTagText(...tagText,arr);
       }
     }
-    */
+    
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,6 +50,11 @@ export const Form = () => {
     setTextComment("");
     setEditId("");
   };
+  
+  const handleBlur = () => {
+    console.log(tagText)
+  }
+
   useEffect(() => {
     if (Object.keys(editText).length) {
       const {text,generalText,id } = editText; 
@@ -89,9 +82,16 @@ export const Form = () => {
             placeholder="Ваша заметка"
             value={textComment}
             onChange={handleTextChange}
+            onBlur={handleBlur}
           ></textarea>
         </p>
-        <P size="m">{tagText}</P>
+        { blur && !!tagText.length 
+        ? tagText.map((tag, index) => {
+          return <P size="m" key={index}>{tag}</P>
+        })
+        : null
+        }
+         
         <p>
           <Button type={"submit"} appearance="primary">Сохранить </Button>
         </p>

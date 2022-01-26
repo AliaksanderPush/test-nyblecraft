@@ -1,2 +1,5 @@
 export * from "./form/Form";
-export * from "./note/Note";
+export * from "./UI/Htag/Htag";
+export * from "./UI/Ptag/P";
+export * from "./UI/buttons/Button";
+export * from "./notes/Notes";

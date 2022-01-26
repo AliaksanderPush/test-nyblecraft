@@ -1,0 +1,29 @@
+.button {
+  background-color: blueviolet;
+  display: inline-block;
+  text-align: center;
+  margin: 5px;
+  border-radius: 5px;
+}
+.primary {
+  background-color: blue;
+  padding: 5px;
+  color: white;
+  &:hover {
+    background-color: yellowgreen;
+    transition: all 0.3s;
+  }
+}
+.ghost {
+  background-color: rgb(183, 117, 245);
+  width: 80px;
+  height: 40px;
+  padding: 3px;
+  &:hover {
+    background-color: red;
+    transition: all 0.3s;
+  }
+}
+.aaa {
+  width: 200px;
+}

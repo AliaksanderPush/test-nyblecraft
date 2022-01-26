@@ -1,69 +1,73 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "../UI/buttons/Button";
 import { useDispatch } from "react-redux";
-import { nouteCreate, editNouteSave } from "../../redux/acshions";
+import { nouteCreate, editNouteSave, createTag } from "../../redux/acshions";
+import { editNoute } from "../../redux/selectors";
 import uniqid from "uniqid";
-import {P} from '../';
+import { P } from "../";
 import { useSelector } from "react-redux";
 import "./Form.scss";
 
-
 export const Form = () => {
   const dispatch = useDispatch();
-  const editText = useSelector((state) => {
-    return  state.EditReducer.editNoutes;
-   });
+  const editText = useSelector(editNoute);
+
   const [generaltext, setGeneralText] = useState("");
   const [textComment, setTextComment] = useState("");
   const [editId, setEditId] = useState("");
-  const [blur, setBlur] = useState(false);
 
-  const [tagText, setTagText] = useState('');
-  
-  console.log('tag>>',tagText);
-  
+  const [tagText, setTagText] = useState([]);
+
   const handlerGeneralChange = (e) => {
     setGeneralText(e.target.value);
   };
   const handleTextChange = (e) => {
-     setTextComment(e.target.value);
-        
-    let val = textComment.split(/(#[a-z\d-]+)/ig);
-    for (let i = 0; i < val.length; i++) {
-        if (val[i].charAt(0) === "#") {
-            let arr = [];
-            arr.push(val[i]);
-            setTagText(...tagText,arr);
-      }
-    }
-    
+    setTextComment(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!editId) {
-     const  id = uniqid();
+      const id = uniqid();
       dispatch(nouteCreate(id, generaltext, textComment));
-  } else {
+      !!tagText &&
+        tagText.forEach((item) => {
+          dispatch(createTag(id, item));
+        });
+    } else {
       dispatch(editNouteSave(editId, generaltext, textComment));
-  }
+      !!tagText &&
+        tagText.forEach((item) => {
+          dispatch(createTag(editId, item));
+        });
+    }
     setGeneralText("");
     setTextComment("");
     setEditId("");
   };
-  
+
   const handleBlur = () => {
-    console.log(tagText)
-  }
+    if (textComment) {
+      let arr = textComment.split(" ");
+      let array = [];
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i][0] === "#") {
+          array.push(arr[i]);
+        }
+      }
+      setTagText(array);
+    }
+  };
 
   useEffect(() => {
     if (Object.keys(editText).length) {
-      const {text,generalText,id } = editText; 
-        setTextComment(text);
-        setGeneralText(generalText);
-        setEditId(id);
+      const { text, generalText, id } = editText;
+      setTextComment(text);
+      setGeneralText(generalText);
+      setEditId(id);
     }
-  },[editText])
-  
+  }, [editText]);
+
   return (
     <div id="form" onSubmit={handleSubmit}>
       <form action="#form" method="POST">
@@ -85,15 +89,19 @@ export const Form = () => {
             onBlur={handleBlur}
           ></textarea>
         </p>
-        { blur && !!tagText.length 
-        ? tagText.map((tag, index) => {
-          return <P size="m" key={index}>{tag}</P>
-        })
-        : null
-        }
-         
+        {!!tagText.length
+          ? tagText.map((tag, index) => {
+              return (
+                <P size="m" key={index}>
+                  {tag}
+                </P>
+              );
+            })
+          : null}
         <p>
-          <Button type={"submit"} appearance="primary">Сохранить </Button>
+          <Button type={"submit"} appearance="primary">
+            Сохранить{" "}
+          </Button>
         </p>
       </form>
     </div>

@@ -4,11 +4,14 @@ import { Notes } from "../components";
 import { Htag } from "../components";
 import { P } from "../components";
 import { Button } from "../components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { noutesLoad } from "../redux/acshions";
+import { SingleTag } from "../components";
+import { getTags } from "../redux/selectors";
 import "./Home.scss";
 
 export const Home = () => {
+  const tag = useSelector(getTags);
   const dispatch = useDispatch();
   const handleGetNoutes = () => {
     dispatch(noutesLoad());
@@ -22,9 +25,15 @@ export const Home = () => {
           <Notes />
           <P size="m">Запись успешно сохранена!</P>
           <Form />
+          <div>
+            {!!tag &&
+              tag.map((item, index) => {
+                return <SingleTag key={index + item.id} data={item} />;
+              })}
+          </div>
         </div>
       </div>
-      <Button type={"button"} appearance="primary" onClick={handleGetNoutes}>
+      <Button type={"button"} appearance="ghost" onClick={handleGetNoutes}>
         Получить все заметки
       </Button>
     </div>

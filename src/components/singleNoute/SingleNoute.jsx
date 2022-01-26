@@ -1,14 +1,30 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { formatDateTime } from "../../helpers/FormatDataTime";
 import { Htag } from "../UI/Htag/Htag";
 import { Button } from "../UI/buttons/Button";
+import {removeNoute, editNoute} from '../../redux/acshions';
+import { useDispatch } from "react-redux";
+
 import "./SingleNote.scss";
 
 export const SingleNote = ({ data }) => {
-  const { generalText, text } = data;
+  const {id, generalText, text } = data;
+  const [textId, setTextId] = useState('');
+  const [generalTextId, setGeneralTextId] = useState('');
+  const dispath = useDispatch();
   const currTime = new Date();
   const dataNow = formatDateTime(currTime);
 
+ const  handleDelete = (id) => {
+  dispath(removeNoute(id));
+ }
+ const handleEdit = (id) => {
+  dispath(editNoute(id, textId, generalTextId));
+ }
+  useEffect(() => {
+    setTextId(text)
+    setGeneralTextId(generalText)
+  },[data])
   return (
     <div className="note">
       <div>
@@ -17,10 +33,18 @@ export const SingleNote = ({ data }) => {
         </Htag>
       </div>
       <p>{text}</p>
-      <Button type={"button"} appearance="primary">
+      <Button
+       type={"button"} 
+       appearance="primary"
+       onClick = {() => handleEdit(id, text, generalText)} 
+       >
         Изменить
       </Button>
-      <Button type={"button"} appearance="ghost">
+      <Button
+       type={"button"}
+       appearance="ghost"
+       onClick = {() => handleDelete(id)}  
+        >
         Удалить
       </Button>
     </div>

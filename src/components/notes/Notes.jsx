@@ -7,7 +7,7 @@ import "./Notes.scss";
 
 export const Notes = () => {
   const noutes = useSelector(createdNoutes);
-  console.log("noutess>>", noutes);
+
   return (
     <div>
       {!!noutes.length &&

@@ -1,25 +1,24 @@
 import { TAG_CREATE, TAG_REMOVE } from "./type";
 
 const initialState = {
-  tag: [],
+  tags: [],
 };
 
 export const TagReducer = (state = initialState, action) => {
-  console.log("tagreduser>>", action);
   switch (action.type) {
     case TAG_CREATE:
       return {
         ...state,
-        tag: [...state.tag, action],
+        tags: [...state.tags, action],
       };
     case TAG_REMOVE:
       return (() => {
         const { id } = action;
-        const { tag } = state;
-        const nextTag = tag.filter((item) => item.id !== id);
+        const { tags } = state;
+        const nextTag = tags.filter((item) => item.id !== id);
         return {
           ...state,
-          tag: nextTag,
+          tags: nextTag,
         };
       })();
 

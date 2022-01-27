@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { nouteCreate, editNouteSave, createTag } from "../../redux/acshions";
 import { editNoute } from "../../redux/selectors";
 import { noutesLoad } from "../../redux/acshions";
+import { urlNotes } from "../../helpers/url";
 import uniqid from "uniqid";
 import { P } from "../";
 import { useSelector } from "react-redux";
@@ -47,7 +48,7 @@ export const Form = () => {
     setEditId("");
   };
 
-  const handleBlur = () => {
+  const handleInput = () => {
     if (textComment) {
       let arr = textComment.split(" ");
       let array = [];
@@ -59,9 +60,12 @@ export const Form = () => {
       setTagText(array);
     }
   };
- 
+
   const handleGetNoutes = () => {
-    dispatch(noutesLoad());
+    dispatch(noutesLoad(urlNotes));
+  };
+  const handleFocus = () => {
+    setTagText("");
   };
 
   useEffect(() => {
@@ -91,7 +95,8 @@ export const Form = () => {
             placeholder="Ваша заметка"
             value={textComment}
             onChange={handleTextChange}
-            onBlur={handleBlur}
+            onInput={handleInput}
+            onFocus={handleFocus}
           ></textarea>
         </p>
         {!!tagText.length
@@ -107,11 +112,14 @@ export const Form = () => {
           <Button type={"submit"} appearance="primary">
             Сохранить{" "}
           </Button>
-          <Button type={"button"} appearance="primary" onClick={handleGetNoutes}>
-           Получить все заметки
+          <Button
+            type={"button"}
+            appearance="primary"
+            onClick={handleGetNoutes}
+          >
+            Получить все заметки
           </Button>
         </p>
-
       </form>
     </div>
   );

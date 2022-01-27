@@ -8,7 +8,7 @@ import { getTags } from "../redux/selectors";
 import "./Home.scss";
 
 export const Home = () => {
-  const tag = useSelector(getTags);
+  const tags = useSelector(getTags);
 
   return (
     <div className="container">
@@ -19,8 +19,8 @@ export const Home = () => {
           <Form />
           <div className="row">
             <div className="col-6 ">
-              {!!tag &&
-                tag.map((item, index) => {
+              {!!tags &&
+                tags.map((item, index) => {
                   return <SingleTag key={index + item.id} data={item} />;
                 })}
             </div>

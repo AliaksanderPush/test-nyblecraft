@@ -10,7 +10,6 @@ const initialState = {
 };
 
 export const NoutesReducer = (state = initialState, action) => {
-  console.log("NoutesReducer>>", action);
   switch (action.type) {
     case NOUTE_CREATE:
       return {

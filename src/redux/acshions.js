@@ -10,9 +10,9 @@ import {
   ERROR_DISPLAY_OFF,
   ERROR_DISPLAY_ON,
   ACTIVE_CLASS_ON,
-  ACTIVE_CLASS_OFF
+  ACTIVE_CLASS_OFF,
 } from "./type";
-import { urlNotes, urlTags } from "../helpers/url";
+import { urlNotes } from "../helpers/url";
 
 export function nouteCreate(id, generalText, text) {
   const req = { id, generalText, text };
@@ -33,47 +33,42 @@ export const noutesLoad = (url) => {
         type: GET_ALL_NOUTES,
         data: notes,
       });
-    } catch(error) {
+    } catch (error) {
       dispatch(errorOn());
       errOff();
-      throw new Error(`Could not fetch ${url}, status: ${console.error(error)}`);
-      
+      throw new Error(
+        `Could not fetch ${url}, status: ${console.error(error)}`
+      );
     }
+  };
+};
+
+export const postData = async (url, data) => {
+  const result = await fetch(url, {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: data,
+  });
+  if (!result.ok) {
+    throw new Error(`Could not fetch ${url}, status: ${result.status}`);
   }
 };
 
-export const postData =  (url, data) => {
-  return async (dispatch) => {
-    try {
-      const result = await fetch(url, {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: data,
-      });
-    } catch(error) {
-      dispatch(errorOn());
-      errOff();
-      throw new Error(`Could not fetch ${url}, status: ${console.error(error)}`);
-      
-    }
+export const deleteData = async (url, id) => {
+  const result = await fetch(url + "/" + id, {
+    method: "DELETE",
+  });
+  if (!result.ok) {
+    throw new Error(`Could not fetch ${url}, status: ${result.status}`);
   }
-    
 };
-
-export const deleteData = (url, id) => {
-  return async (dispatch) => {
-    try {
-      const result = await fetch(url + id, {
-        method: "DELETE",
-      });
-    } catch(error) {
-      dispatch(errorOn());
-      errOff();
-      throw new Error(`Could not fetch ${url}, status: ${console.error(error)}`);
-      
-    }
+export const putData = async (url, id) => {
+  const result = await fetch(url + "/" + id, {
+    method: "PUT",
+  });
+  if (!result.ok) {
+    throw new Error(`Could not fetch ${url}, status: ${result.status}`);
   }
- 
 };
 
 export function removeNoute(id) {
@@ -84,6 +79,7 @@ export function removeNoute(id) {
   };
 }
 export function editNoute(id, text, generalText) {
+  putData(urlNotes, id);
   return {
     type: EDIT_NOUTE,
     text,
@@ -101,17 +97,13 @@ export function editNouteSave(id, generalText, text) {
 }
 
 export function createTag(tagId, tagText) {
-  const req = { id: tagId, tags: tagText };
-  const request = JSON.stringify(req);
-  postData(urlTags, request);
   return {
     type: TAG_CREATE,
     id: tagId,
-    tags: tagText,
+    tag: tagText,
   };
 }
 export function removeTag(id) {
-  deleteData(urlTags, id);
   return {
     type: TAG_REMOVE,
     id,
@@ -148,7 +140,7 @@ export function activeOn() {
 }
 
 export function errOff() {
- setTimeout((dispatch) => {
-   dispatch(errorOff())
- },4000)
+  setTimeout((dispatch) => {
+    dispatch(errorOff());
+  }, 4000);
 }

@@ -1,6 +1,6 @@
 import React from "react";
-import { P } from "../";
-import { Button } from "../";
+import { P } from "..";
+import { Button } from "..";
 import { removeTag, searchTag } from "../../redux/acshions";
 import { useDispatch } from "react-redux";
 
@@ -16,14 +16,17 @@ export const SingleTag = ({ data }) => {
   };
 
   return (
-    <div>
+    <>
+     <div className="mt-2 mb-2 tags">
       <P size="m">{tags}</P>
-      <Button appearance="primary" onClick={() => handleSearch(id)}>
-        Найти
-      </Button>
-      <Button appearance="ghost" onClick={() => handleRemove(id)}>
-        Удалить
-      </Button>
-    </div>
+         <Button appearance="primary" onClick={() => handleSearch(id)}>
+          Найти
+        </Button>
+        <Button appearance="ghost" onClick={() => handleRemove(id)}>
+          Удалить
+        </Button>
+      </div>
+     
+    </>
   );
 };

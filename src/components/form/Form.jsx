@@ -3,6 +3,7 @@ import { Button } from "../UI/buttons/Button";
 import { useDispatch } from "react-redux";
 import { nouteCreate, editNouteSave, createTag } from "../../redux/acshions";
 import { editNoute } from "../../redux/selectors";
+import { noutesLoad } from "../../redux/acshions";
 import uniqid from "uniqid";
 import { P } from "../";
 import { useSelector } from "react-redux";
@@ -58,6 +59,10 @@ export const Form = () => {
       setTagText(array);
     }
   };
+ 
+  const handleGetNoutes = () => {
+    dispatch(noutesLoad());
+  };
 
   useEffect(() => {
     if (Object.keys(editText).length) {
@@ -76,7 +81,7 @@ export const Form = () => {
             type="text"
             value={generaltext}
             onChange={handlerGeneralChange}
-            className="form-control"
+            className="form-control mt-3"
             placeholder="Заголовок"
           />
         </p>
@@ -102,7 +107,11 @@ export const Form = () => {
           <Button type={"submit"} appearance="primary">
             Сохранить{" "}
           </Button>
+          <Button type={"button"} appearance="primary" onClick={handleGetNoutes}>
+           Получить все заметки
+          </Button>
         </p>
+
       </form>
     </div>
   );

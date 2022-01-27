@@ -7,6 +7,10 @@ import {
   TAG_CREATE,
   TAG_SEARCH,
   TAG_REMOVE,
+  ERROR_DISPLAY_OFF,
+  ERROR_DISPLAY_ON,
+  ACTIVE_CLASS_ON,
+  ACTIVE_CLASS_OFF
 } from "./type";
 import { urlNotes, urlTags } from "../helpers/url";
 
@@ -22,32 +26,54 @@ export function nouteCreate(id, generalText, text) {
 
 export const noutesLoad = (url) => {
   return async (dispatch) => {
-    const result = await fetch(url);
-    if (!result.ok) {
-      throw new Error(`Could not fetch ${url}, status: ${result.status}`);
+    try {
+      const result = await fetch(url);
+      const notes = await result.json();
+      dispatch({
+        type: GET_ALL_NOUTES,
+        data: notes,
+      });
+    } catch(error) {
+      dispatch(errorOn());
+      errOff();
+      throw new Error(`Could not fetch ${url}, status: ${console.error(error)}`);
+      
     }
-    const notes = await result.json();
-    dispatch({
-      type: GET_ALL_NOUTES,
-      data: notes,
-    });
-  };
+  }
 };
 
-export const postData = async (url, data) => {
-  const result = await fetch(url, {
-    method: "POST",
-    headers: { "Content-type": "application/json" },
-    body: data,
-  });
-  return await result;
+export const postData =  (url, data) => {
+  return async (dispatch) => {
+    try {
+      const result = await fetch(url, {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: data,
+      });
+    } catch(error) {
+      dispatch(errorOn());
+      errOff();
+      throw new Error(`Could not fetch ${url}, status: ${console.error(error)}`);
+      
+    }
+  }
+    
 };
 
-export const deleteData = async (url, id) => {
-  const result = await fetch(url + id, {
-    method: "DELETE",
-  });
-  return await result;
+export const deleteData = (url, id) => {
+  return async (dispatch) => {
+    try {
+      const result = await fetch(url + id, {
+        method: "DELETE",
+      });
+    } catch(error) {
+      dispatch(errorOn());
+      errOff();
+      throw new Error(`Could not fetch ${url}, status: ${console.error(error)}`);
+      
+    }
+  }
+ 
 };
 
 export function removeNoute(id) {
@@ -97,4 +123,32 @@ export function searchTag(tagId) {
     type: TAG_SEARCH,
     id: tagId,
   };
+}
+
+export function errorOff() {
+  return {
+    type: ERROR_DISPLAY_OFF,
+  };
+}
+export function errorOn() {
+  return {
+    type: ERROR_DISPLAY_ON,
+  };
+}
+
+export function activeOff() {
+  return {
+    type: ACTIVE_CLASS_OFF,
+  };
+}
+export function activeOn() {
+  return {
+    type: ACTIVE_CLASS_ON,
+  };
+}
+
+export function errOff() {
+ setTimeout((dispatch) => {
+   dispatch(errorOff())
+ },4000)
 }

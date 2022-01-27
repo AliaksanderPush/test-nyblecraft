@@ -6,3 +6,7 @@ export const EDIT_NOUTE_SAVE = "EDIT_NOUTE_SAVE";
 export const TAG_CREATE = "TAG_CREATE";
 export const TAG_SEARCH = "TAG_SEARCH";
 export const TAG_REMOVE = "TAG_REMOVE";
+export const ERROR_DISPLAY_OFF = "ERROR_DISPLAY_OFF";
+export const ERROR_DISPLAY_ON = "ERROR_DISPLAY_ON";
+export const ACTIVE_CLASS_ON = "ACTIVE_CLASS_ON";
+export const ACTIVE_CLASS_OFF = "ACTIVE_CLASS_OFF";

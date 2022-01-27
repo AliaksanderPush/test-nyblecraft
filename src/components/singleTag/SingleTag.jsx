@@ -18,7 +18,7 @@ export const SingleTag = ({ data }) => {
   return (
     <>
      <div className="mt-2 mb-2 tags">
-      <P size="m">{tags}</P>
+      <P  size="m">{tags}</P>
          <Button appearance="primary" onClick={() => handleSearch(id)}>
           Найти
         </Button>

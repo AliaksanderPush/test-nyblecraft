@@ -2,16 +2,19 @@ import React,{useEffect, useState} from "react";
 import { formatDateTime } from "../../helpers/FormatDataTime";
 import { Htag } from "../UI/Htag/Htag";
 import { Button } from "../UI/buttons/Button";
-import {removeNoute, editNoute} from '../../redux/acshions';
+import {activ} from '../../redux/selectors';
+import {removeNoute, editNoute,activeOn } from '../../redux/acshions';
 import { useDispatch } from "react-redux";
 
 import "./SingleNote.scss";
+import { useSelector } from "react-redux";
 
 export const SingleNote = ({ data }) => {
   const {id, generalText, text } = data;
   const [textId, setTextId] = useState('');
   const [generalTextId, setGeneralTextId] = useState('');
   const dispath = useDispatch();
+  const active = useSelector(activ);
   const currTime = new Date();
   const dataNow = formatDateTime(currTime);
 
@@ -20,7 +23,25 @@ export const SingleNote = ({ data }) => {
  }
  const handleEdit = (id) => {
   dispath(editNoute(id, textId, generalTextId));
+  dispath(activeOn())
  }
+const activeText = (text) => {
+  console.log(text)
+  let arr = text.split(" ");
+  let array = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][0] === "#") {
+      array.push( '&lt;span&gt;'+ arr[i] +'&lt;/span&gt;' );
+    } else {
+      array.push(arr[i]);
+    }
+  }
+  console.log(array)
+  return array.join();
+}
+
+
+
   useEffect(() => {
     setTextId(text)
     setGeneralTextId(generalText)
@@ -32,7 +53,7 @@ export const SingleNote = ({ data }) => {
           {dataNow} {generalText}
         </Htag>
       </div>
-      <p>{text}</p>
+      <p>{ activ ? activeText(text) : text}</p>
       <Button
        type={"button"} 
        appearance="primary"

@@ -8,20 +8,20 @@ import {
   TAG_SEARCH,
   TAG_REMOVE,
 } from "./type";
+import { urlNotes, urlTags } from "../helpers/url";
 
 export function nouteCreate(id, generalText, text) {
   const req = { id, generalText, text };
   const request = JSON.stringify(req);
-  postData(request);
+  postData(urlNotes, request);
   return {
     type: NOUTE_CREATE,
     data: req,
   };
 }
 
-export const noutesLoad = () => {
+export const noutesLoad = (url) => {
   return async (dispatch) => {
-    const url = " http://localhost:3004/noutes";
     const result = await fetch(url);
     if (!result.ok) {
       throw new Error(`Could not fetch ${url}, status: ${result.status}`);
@@ -31,12 +31,10 @@ export const noutesLoad = () => {
       type: GET_ALL_NOUTES,
       data: notes,
     });
-    console.log(notes);
   };
 };
 
-export const postData = async (data) => {
-  const url = " http://localhost:3004/requests";
+export const postData = async (url, data) => {
   const result = await fetch(url, {
     method: "POST",
     headers: { "Content-type": "application/json" },
@@ -45,16 +43,15 @@ export const postData = async (data) => {
   return await result;
 };
 
-export const deleteData = async (id) => {
-  const url = " http://localhost:3004/requests/" + id;
-  const result = await fetch(url, {
+export const deleteData = async (url, id) => {
+  const result = await fetch(url + id, {
     method: "DELETE",
   });
   return await result;
 };
 
 export function removeNoute(id) {
-  deleteData(id);
+  deleteData(urlNotes, id);
   return {
     type: REMOVE_NOUTE,
     id,
@@ -78,6 +75,9 @@ export function editNouteSave(id, generalText, text) {
 }
 
 export function createTag(tagId, tagText) {
+  const req = { id: tagId, tags: tagText };
+  const request = JSON.stringify(req);
+  postData(urlTags, request);
   return {
     type: TAG_CREATE,
     id: tagId,
@@ -85,6 +85,7 @@ export function createTag(tagId, tagText) {
   };
 }
 export function removeTag(id) {
+  deleteData(urlTags, id);
   return {
     type: TAG_REMOVE,
     id,

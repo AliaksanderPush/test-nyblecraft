@@ -1,18 +1,9 @@
-#wrapper {
-  width: 500px;
-  margin: 0px auto;
-  padding: 10px;
-  text-align: justify;
-  & > p {
-    margin-bottom: 15px;
-  }
-  p {
-    margin-bottom: 5px;
-  }
+#main {
+  background: seashell;
 }
+
 .tags {
   border: 2px solid rgb(183, 117, 245);
   padding: 10px;
   border-radius: 10px;
-
 }

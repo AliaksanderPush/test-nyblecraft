@@ -44,7 +44,7 @@ export const noutesLoad = (url) => {
 };
 
 export const postData = async (url, data) => {
-  const result = await fetch(url + "/noutes", {
+  const result = await fetch(url+"/noutes", {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: data,
@@ -62,8 +62,9 @@ export const deleteData = async (url, id) => {
     throw new Error(`Could not fetch ${url}, status: ${result.status}`);
   }
 };
+
 export const putData = async (url, id) => {
-  const result = await fetch(url + "/" + id, {
+  const result = await fetch(url + "/noutes/" + id, {
     method: "PUT",
   });
   if (!result.ok) {

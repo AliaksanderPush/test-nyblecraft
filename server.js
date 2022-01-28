@@ -9,7 +9,7 @@ server.use(middlewares);
 server.use(
   jsonServer.rewriter({
     "": "/:id",
-    '/noutes/*': '/$1',
+    
     
     
   })

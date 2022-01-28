@@ -27,7 +27,7 @@ export function nouteCreate(id, generalText, text) {
 export const noutesLoad = (url) => {
   return async (dispatch) => {
     try {
-      const result = await fetch(url);
+      const result = await fetch(url + "/noutes");
       const notes = await result.json();
       dispatch({
         type: GET_ALL_NOUTES,
@@ -44,7 +44,7 @@ export const noutesLoad = (url) => {
 };
 
 export const postData = async (url, data) => {
-  const result = await fetch(url, {
+  const result = await fetch(url + "/noutes", {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: data,
@@ -55,7 +55,7 @@ export const postData = async (url, data) => {
 };
 
 export const deleteData = async (url, id) => {
-  const result = await fetch(url + "/" + id, {
+  const result = await fetch(url + "/noutes/" + id, {
     method: "DELETE",
   });
   if (!result.ok) {

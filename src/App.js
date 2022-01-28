@@ -3,7 +3,6 @@ import { Home } from "./pages/Home";
 import { Layout } from "./layout/layout";
 import { useDispatch, useSelector } from "react-redux";
 import { noutesLoad } from "./redux/acshions";
-import { urlNotes } from "./helpers/url";
 import { errors } from "./redux/selectors";
 import { Error } from "./components/error/ErrorBandle";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,7 +12,7 @@ function App() {
   const err = useSelector(errors);
 
   useEffect(() => {
-    dispatch(noutesLoad(urlNotes));
+    dispatch(noutesLoad());
   }, [dispatch]);
 
   return (

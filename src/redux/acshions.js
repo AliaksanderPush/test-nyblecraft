@@ -12,22 +12,22 @@ import {
   ACTIVE_CLASS_ON,
   ACTIVE_CLASS_OFF,
 } from "./type";
-import { urlNotes } from "../helpers/url";
+import { url } from "../helpers/url";
 
 export function nouteCreate(id, generalText, text) {
   const req = { id, generalText, text };
   const request = JSON.stringify(req);
-  postData(urlNotes, request);
+  postData(request);
   return {
     type: NOUTE_CREATE,
     data: req,
   };
 }
 
-export const noutesLoad = (url) => {
+export const noutesLoad = () => {
   return async (dispatch) => {
     try {
-      const result = await fetch(url);
+      const result = await fetch(`${url}/noutes`);
       const notes = await result.json();
       dispatch({
         type: GET_ALL_NOUTES,
@@ -43,8 +43,8 @@ export const noutesLoad = (url) => {
   };
 };
 
-export const postData = async (url, data) => {
-  const result = await fetch(url, {
+export const postData = async (data) => {
+  const result = await fetch(`${url}/noutes`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: data,
@@ -54,8 +54,8 @@ export const postData = async (url, data) => {
   }
 };
 
-export const deleteData = async (url, id) => {
-  const result = await fetch(url + "/" + id, {
+export const deleteData = async (id) => {
+  const result = await fetch(`${url}/noutes/${id}`, {
     method: "DELETE",
   });
   if (!result.ok) {
@@ -63,8 +63,8 @@ export const deleteData = async (url, id) => {
   }
 };
 
-export const putData = async (url, id, data) => {
-  const result = await fetch(url + "/" + id, {
+export const putData = async (id, data) => {
+  const result = await fetch(`${url}/noutes/${id}`, {
     method: "PUT",
     headers: { "Content-type": "application/json" },
     body: data,
@@ -75,7 +75,7 @@ export const putData = async (url, id, data) => {
 };
 
 export function removeNoute(id) {
-  deleteData(urlNotes, id);
+  deleteData(id);
   return {
     type: REMOVE_NOUTE,
     id,
@@ -92,7 +92,7 @@ export function editNoute(id, text, generalText) {
 export function editNouteSave(id, generalText, text) {
   const req = { id, generalText, text };
   const request = JSON.stringify(req);
-  putData(urlNotes, id, request);
+  putData(id, request);
   return {
     type: EDIT_NOUTE_SAVE,
     text,

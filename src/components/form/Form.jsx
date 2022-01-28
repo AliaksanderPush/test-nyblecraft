@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { nouteCreate, editNouteSave, createTag } from "../../redux/acshions";
 import { editNoute } from "../../redux/selectors";
 import { noutesLoad } from "../../redux/acshions";
-import { urlNotes } from "../../helpers/url";
 import uniqid from "uniqid";
 import { P } from "../";
 import { useSelector } from "react-redux";
@@ -62,7 +61,7 @@ export const Form = () => {
   };
 
   const handleGetNoutes = () => {
-    dispatch(noutesLoad(urlNotes));
+    dispatch(noutesLoad());
   };
   const handleFocus = () => {
     setTagText("");

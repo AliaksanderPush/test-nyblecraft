@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { formatDateTime } from "../../helpers/FormatDataTime";
 import { Htag } from "../UI/Htag/Htag";
 import { Button } from "../UI/buttons/Button";
-import { removeNoute, editNoute, activeOn } from "../../redux/acshions";
+import { removeNoute, editNoute } from "../../redux/acshions";
 import { useDispatch } from "react-redux";
 import "./SingleNote.scss";
 
@@ -19,7 +19,7 @@ export const SingleNote = ({ data }) => {
   };
   const handleEdit = (id) => {
     dispath(editNoute(id, textId, generalTextId));
-    dispath(activeOn());
+    
   };
 
   useEffect(() => {

@@ -8,7 +8,8 @@ const PORT = process.env.PORT || 8000;
 server.use(middlewares);
 server.use(
   jsonServer.rewriter({
-    "/noutes": "/noutes/:id"
+    "/noutes": "/noutes/:id",
+    '/noutes/*': '/$1',
     
     
   })

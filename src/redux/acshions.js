@@ -27,7 +27,7 @@ export function nouteCreate(id, generalText, text) {
 export const noutesLoad = (url) => {
   return async (dispatch) => {
     try {
-      const result = await fetch(url + "/noutes");
+      const result = await fetch(url);
       const notes = await result.json();
       dispatch({
         type: GET_ALL_NOUTES,
@@ -44,7 +44,7 @@ export const noutesLoad = (url) => {
 };
 
 export const postData = async (url, data) => {
-  const result = await fetch(url+"/noutes", {
+  const result = await fetch(url, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: data,
@@ -55,7 +55,7 @@ export const postData = async (url, data) => {
 };
 
 export const deleteData = async (url, id) => {
-  const result = await fetch(url + "/noutes/" + id, {
+  const result = await fetch(url + "/" + id, {
     method: "DELETE",
   });
   if (!result.ok) {
@@ -63,9 +63,11 @@ export const deleteData = async (url, id) => {
   }
 };
 
-export const putData = async (url, id) => {
-  const result = await fetch(url + "/noutes/" + id, {
+export const putData = async (url, id, data) => {
+  const result = await fetch(url + "/" + id, {
     method: "PUT",
+    headers: { "Content-type": "application/json" },
+    body: data,
   });
   if (!result.ok) {
     throw new Error(`Could not fetch ${url}, status: ${result.status}`);
@@ -80,8 +82,7 @@ export function removeNoute(id) {
   };
 }
 export function editNoute(id, text, generalText) {
-  putData(urlNotes, id);
-  return {
+    return {
     type: EDIT_NOUTE,
     text,
     generalText,
@@ -89,6 +90,9 @@ export function editNoute(id, text, generalText) {
   };
 }
 export function editNouteSave(id, generalText, text) {
+  const req = { id, generalText, text };
+  const request = JSON.stringify(req);
+  putData(urlNotes, id, request);
   return {
     type: EDIT_NOUTE_SAVE,
     text,
